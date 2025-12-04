@@ -22,9 +22,9 @@ Write-Host ""
 Write-Host "[2/3] 检查并安装依赖..." -ForegroundColor Yellow
 Write-Host "正在检查 pymilvus 是否已安装..."
 
-# 安装 pymilvus（包含 Milvus Lite）
-Write-Host "正在安装/更新 pymilvus（包含 Milvus Lite 支持）..." -ForegroundColor Yellow
-pip install "pymilvus[milvus_lite]" --upgrade
+# 安装 pymilvus 和 milvus
+Write-Host "正在安装/更新 pymilvus 和 Milvus Lite..." -ForegroundColor Yellow
+pip install --upgrade pymilvus milvus
 if ($LASTEXITCODE -ne 0) {
     Write-Host "[错误] 安装失败，请检查网络连接" -ForegroundColor Red
     Read-Host "按任意键退出"

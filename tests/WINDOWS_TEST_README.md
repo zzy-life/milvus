@@ -49,8 +49,9 @@
   - pymilvus >= 2.4.0（包含 Milvus Lite 作为可选依赖）
 
 **⚠️ 重要说明**:
-- Milvus Lite 不是独立的包，而是 pymilvus 的可选依赖
-- 使用 `pip install "pymilvus[milvus_lite]"` 安装（注意是**下划线** milvus_lite）
+- 需要同时安装 `pymilvus` 和 `milvus` 两个包
+- `milvus` 包提供 Milvus Lite 功能
+- 使用 `pip install --upgrade pymilvus milvus` 安装
 - 脚本会自动安装所需依赖
 
 ## 🚀 快速开始
@@ -80,8 +81,8 @@
    ```
 3. 安装依赖（**重要：使用正确的命令**）:
    ```bash
-   # 正确的安装方式（注意是下划线 milvus_lite）
-   pip install "pymilvus[milvus_lite]"
+   # 正确的安装方式
+   pip install --upgrade pymilvus milvus
    ```
 4. 运行测试:
    ```bash
@@ -109,10 +110,10 @@ uri = "milvus_demo.db"  # 本地文件模式
 
 **安装要求**:
 ```bash
-pip install "pymilvus[milvus_lite]"
+pip install --upgrade pymilvus milvus
 ```
 
-注意：使用**下划线**（milvus_lite），不是连字符（milvus-lite）
+注意：需要同时安装 pymilvus 和 milvus 两个包
 
 ### 连接到 Milvus 服务器
 
@@ -280,20 +281,22 @@ Please install it with: pip install pymilvus[milvus_lite]
 
 **正确的解决方案**:
 ```bash
-# 唯一正确的安装方式
-pip install "pymilvus[milvus_lite]"
+# 方式 1: 推荐 - 同时安装/升级两个包
+pip install --upgrade pymilvus milvus
+
+# 方式 2: 分步安装
+pip install --upgrade pymilvus
+pip install milvus
 ```
 
 **⚠️ 常见错误**:
 ```bash
-# ❌ 错误 1：使用连字符
-pip install "pymilvus[milvus-lite]"
+# ❌ 错误：使用 milvus_lite 或 milvus-lite
+pip install "pymilvus[milvus_lite]"     # pymilvus 2.6.4 不支持这个
+pip install "pymilvus[milvus-lite]"     # 语法错误
 
-# ❌ 错误 2：试图安装独立包
-pip install milvus-lite
-
-# ❌ 错误 3：安装了错误的 milvus 包
-pip install milvus
+# ❌ 错误：milvus 版本太旧
+# milvus 2.2.16 太旧，需要最新版
 ```
 
 **验证安装成功**:
@@ -318,7 +321,7 @@ pip install milvus
 python -m pip install --upgrade pip
 
 # 使用国内镜像源（如果网络慢）
-pip install "pymilvus[milvus_lite]" -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install --upgrade pymilvus milvus -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 4. 连接到服务器失败
