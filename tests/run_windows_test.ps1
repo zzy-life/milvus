@@ -22,32 +22,15 @@ Write-Host ""
 Write-Host "[2/3] 检查并安装依赖..." -ForegroundColor Yellow
 Write-Host "正在检查 pymilvus 是否已安装..."
 
-# 检查 pymilvus 是否已安装
-$pipShow = pip show pymilvus 2>&1
+# 安装 pymilvus（包含 Milvus Lite）
+Write-Host "正在安装/更新 pymilvus（包含 Milvus Lite 支持）..." -ForegroundColor Yellow
+pip install "pymilvus[milvus_lite]" --upgrade
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "pymilvus 未安装，正在安装 pymilvus 和 Milvus Lite..." -ForegroundColor Yellow
-    pip install "pymilvus[milvus-lite]"
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "[错误] pymilvus 安装失败" -ForegroundColor Red
-        Read-Host "按任意键退出"
-        exit 1
-    }
+    Write-Host "[错误] 安装失败，请检查网络连接" -ForegroundColor Red
+    Read-Host "按任意键退出"
+    exit 1
 } else {
-    Write-Host "pymilvus 已安装，检查 Milvus Lite..." -ForegroundColor Green
-    $milvusShow = pip show milvus-lite 2>&1
-    if ($LASTEXITCODE -ne 0) {
-        Write-Host "Milvus Lite 未安装，正在安装..." -ForegroundColor Yellow
-        Write-Host "注意：先卸载错误的 milvus 包..." -ForegroundColor Yellow
-        pip uninstall milvus -y 2>&1 | Out-Null
-        pip install milvus-lite
-        if ($LASTEXITCODE -ne 0) {
-            Write-Host "[错误] Milvus Lite 安装失败" -ForegroundColor Red
-            Read-Host "按任意键退出"
-            exit 1
-        }
-    } else {
-        Write-Host "Milvus Lite 已安装" -ForegroundColor Green
-    }
+    Write-Host "pymilvus 和 Milvus Lite 安装/更新成功" -ForegroundColor Green
 }
 
 Write-Host ""

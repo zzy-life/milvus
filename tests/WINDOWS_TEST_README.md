@@ -46,14 +46,12 @@
 - **操作系统**: Windows 10/11
 - **Python**: 3.8 或更高版本
 - **依赖包**:
-  - pymilvus >= 2.4.0
-  - **milvus-lite** (注意：是 milvus-lite，不是 milvus！)
-  - numpy
+  - pymilvus >= 2.4.0（包含 Milvus Lite 作为可选依赖）
 
-**⚠️ 重要提醒**:
-- 正确的包名是 **`milvus-lite`**（带连字符）
-- PyPI 上有个 `milvus` 包（无连字符）是错误的旧包，不要安装！
-- 脚本会自动检查并安装正确的依赖
+**⚠️ 重要说明**:
+- Milvus Lite 不是独立的包，而是 pymilvus 的可选依赖
+- 使用 `pip install "pymilvus[milvus_lite]"` 安装（注意是**下划线** milvus_lite）
+- 脚本会自动安装所需依赖
 
 ## 🚀 快速开始
 
@@ -80,17 +78,10 @@
    ```bash
    cd path\to\milvus\tests
    ```
-3. 安装依赖（**重要：必须安装 Milvus Lite**）:
+3. 安装依赖（**重要：使用正确的命令**）:
    ```bash
-   # 方式 1: 一键安装（强烈推荐）
-   pip install "pymilvus[milvus-lite]"
-
-   # 方式 2: 分开安装（注意包名是 milvus-lite 带连字符）
-   pip install pymilvus milvus-lite numpy
-
-   # ⚠️ 如果之前误装了 milvus 包，请先卸载
-   pip uninstall milvus -y
-   pip install milvus-lite
+   # 正确的安装方式（注意是下划线 milvus_lite）
+   pip install "pymilvus[milvus_lite]"
    ```
 4. 运行测试:
    ```bash
@@ -118,8 +109,10 @@ uri = "milvus_demo.db"  # 本地文件模式
 
 **安装要求**:
 ```bash
-pip install "pymilvus[milvus-lite]"
+pip install "pymilvus[milvus_lite]"
 ```
+
+注意：使用**下划线**（milvus_lite），不是连字符（milvus-lite）
 
 ### 连接到 Milvus 服务器
 
@@ -278,38 +271,33 @@ ConnectionConfigException: milvus-lite is required for local database connection
 Please install it with: pip install pymilvus[milvus_lite]
 ```
 
-**原因**: Milvus Lite 是一个嵌入式本地服务，需要单独安装。
+**原因**: Milvus Lite 是 pymilvus 的一个可选依赖，需要特别安装。
 
-**⚠️ 特别注意**:
-- PyPI 上有两个容易混淆的包：
-  - ❌ **`milvus`** (2.2.16) - 这是**错误的旧包**，不要安装！
-  - ✅ **`milvus-lite`** - 这才是**正确的包**
+**⚠️ 关键点**:
+- Milvus Lite **不是独立的 PyPI 包**
+- 它是 pymilvus 的**可选依赖（extra）**
+- 安装命令必须使用**下划线**：`milvus_lite`（不是连字符）
 
-**解决方案**:
+**正确的解决方案**:
 ```bash
-# 方式 1: 推荐 - 一键安装（自动安装正确的包）
+# 唯一正确的安装方式
+pip install "pymilvus[milvus_lite]"
+```
+
+**⚠️ 常见错误**:
+```bash
+# ❌ 错误 1：使用连字符
 pip install "pymilvus[milvus-lite]"
 
-# 方式 2: 分开安装（注意包名是 milvus-lite 带连字符）
-pip install pymilvus milvus-lite
+# ❌ 错误 2：试图安装独立包
+pip install milvus-lite
 
-# ⚠️ 如果之前误装了错误的 milvus 包
-pip uninstall milvus -y          # 先卸载错误的包
-pip install milvus-lite           # 再安装正确的包
-```
-
-**验证安装**:
-```bash
-pip show milvus-lite    # ✅ 应该显示版本信息
-pip show milvus         # ❌ 应该显示 "Package(s) not found"
+# ❌ 错误 3：安装了错误的 milvus 包
+pip install milvus
 ```
 
-**正确的安装后应该看到**:
-```
-Name: milvus-lite
-Version: 2.x.x
-Summary: ...
-```
+**验证安装成功**:
+安装成功后，运行脚本应该能正常连接到 Milvus Lite。你不会在 `pip list` 中看到单独的 `milvus-lite` 包，因为它被集成在 pymilvus 中。
 
 ### 2. Python 未找到
 
@@ -322,7 +310,7 @@ Summary: ...
 
 ### 3. pip 命令失败
 
-**错误**: `pip install pymilvus` 失败
+**错误**: `pip install` 失败
 
 **解决方案**:
 ```bash
@@ -330,7 +318,7 @@ Summary: ...
 python -m pip install --upgrade pip
 
 # 使用国内镜像源（如果网络慢）
-pip install "pymilvus[milvus-lite]" -i https://pypi.tuna.tsinghua.edu.cn/simple
+pip install "pymilvus[milvus_lite]" -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
 ### 4. 连接到服务器失败

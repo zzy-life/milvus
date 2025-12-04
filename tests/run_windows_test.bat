@@ -23,22 +23,15 @@ echo.
 echo [2/3] 检查并安装依赖...
 echo 正在检查 pymilvus 是否已安装...
 
-REM 检查 pymilvus 是否已安装
-pip show pymilvus >nul 2>&1
+REM 检查并安装 pymilvus（包含 Milvus Lite）
+echo 正在安装/更新 pymilvus（包含 Milvus Lite 支持）...
+pip install "pymilvus[milvus_lite]" --upgrade
 if %errorlevel% neq 0 (
-    echo pymilvus 未安装，正在安装 pymilvus 和 Milvus Lite...
-    pip install "pymilvus[milvus-lite]"
+    echo [错误] 安装失败，请检查网络连接
+    pause
+    exit /b 1
 ) else (
-    echo pymilvus 已安装，检查 Milvus Lite...
-    pip show milvus-lite >nul 2>&1
-    if %errorlevel% neq 0 (
-        echo Milvus Lite 未安装，正在安装...
-        echo 注意：先卸载错误的 milvus 包...
-        pip uninstall milvus -y >nul 2>&1
-        pip install milvus-lite
-    ) else (
-        echo Milvus Lite 已安装
-    )
+    echo pymilvus 和 Milvus Lite 安装/更新成功
 )
 
 echo.
