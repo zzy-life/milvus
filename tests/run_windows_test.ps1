@@ -25,15 +25,27 @@ Write-Host "正在检查 pymilvus 是否已安装..."
 # 检查 pymilvus 是否已安装
 $pipShow = pip show pymilvus 2>&1
 if ($LASTEXITCODE -ne 0) {
-    Write-Host "pymilvus 未安装，正在安装..." -ForegroundColor Yellow
-    pip install pymilvus
+    Write-Host "pymilvus 未安装，正在安装 pymilvus 和 Milvus Lite..." -ForegroundColor Yellow
+    pip install "pymilvus[milvus-lite]"
     if ($LASTEXITCODE -ne 0) {
         Write-Host "[错误] pymilvus 安装失败" -ForegroundColor Red
         Read-Host "按任意键退出"
         exit 1
     }
 } else {
-    Write-Host "pymilvus 已安装" -ForegroundColor Green
+    Write-Host "pymilvus 已安装，检查 Milvus Lite..." -ForegroundColor Green
+    $milvusShow = pip show milvus 2>&1
+    if ($LASTEXITCODE -ne 0) {
+        Write-Host "Milvus Lite 未安装，正在安装..." -ForegroundColor Yellow
+        pip install milvus
+        if ($LASTEXITCODE -ne 0) {
+            Write-Host "[错误] Milvus Lite 安装失败" -ForegroundColor Red
+            Read-Host "按任意键退出"
+            exit 1
+        }
+    } else {
+        Write-Host "Milvus Lite 已安装" -ForegroundColor Green
+    }
 }
 
 Write-Host ""

@@ -45,7 +45,12 @@
 
 - **操作系统**: Windows 10/11
 - **Python**: 3.8 或更高版本
-- **依赖包**: pymilvus (脚本会自动安装)
+- **依赖包**:
+  - pymilvus >= 2.4.0
+  - milvus (Milvus Lite，用于本地测试)
+  - numpy
+
+**重要**: 脚本会自动安装这些依赖
 
 ## 🚀 快速开始
 
@@ -72,9 +77,13 @@
    ```bash
    cd path\to\milvus\tests
    ```
-3. 安装依赖:
+3. 安装依赖（**重要：必须安装 Milvus Lite**）:
    ```bash
-   pip install pymilvus
+   # 方式 1: 一键安装（推荐）
+   pip install "pymilvus[milvus-lite]"
+
+   # 方式 2: 分开安装
+   pip install pymilvus milvus numpy
    ```
 4. 运行测试:
    ```bash
@@ -83,12 +92,26 @@
 
 ## 📝 配置选项
 
-### 使用 Milvus Lite (默认)
+### 使用 Milvus Lite (默认) ⭐ 推荐新手
 
-默认配置使用 Milvus Lite，无需启动任何服务，数据保存在本地文件中：
+**什么是 Milvus Lite？**
+
+Milvus Lite 是 Milvus 的轻量级版本，它：
+- ✅ **无需启动服务器** - 直接嵌入在 Python 中
+- ✅ **零配置** - 开箱即用
+- ✅ **数据持久化** - 数据保存在本地文件中
+- ✅ **完整功能** - 支持所有基本的向量操作
+- ✅ **适合测试和开发** - 快速验证功能
+
+默认配置使用 Milvus Lite，数据保存在本地文件中：
 
 ```python
-uri = "milvus_demo.db"  # 本地文件，无需服务
+uri = "milvus_demo.db"  # 本地文件模式
+```
+
+**安装要求**:
+```bash
+pip install "pymilvus[milvus-lite]"
 ```
 
 ### 连接到 Milvus 服务器
@@ -240,7 +263,36 @@ Milvus Windows 功能测试
 
 ## 🔍 常见问题
 
-### 1. Python 未找到
+### 1. Milvus Lite 未安装错误 ⭐ **最常见**
+
+**错误信息**:
+```
+ConnectionConfigException: milvus-lite is required for local database connections.
+Please install it with: pip install pymilvus[milvus_lite]
+```
+
+**原因**: Milvus Lite 是一个嵌入式本地服务，需要单独安装。
+
+**解决方案**:
+```bash
+# 推荐方式：完整安装
+pip install "pymilvus[milvus-lite]"
+
+# 或者分开安装
+pip install pymilvus milvus
+
+# 如果上面命令失败，尝试
+pip install pymilvus
+pip install milvus
+```
+
+**验证安装**:
+```bash
+pip show pymilvus
+pip show milvus
+```
+
+### 2. Python 未找到
 
 **错误**: `'python' 不是内部或外部命令...`
 
@@ -249,7 +301,7 @@ Milvus Windows 功能测试
 - 安装时勾选 "Add Python to PATH"
 - 或手动添加 Python 到系统环境变量
 
-### 2. pip 命令失败
+### 3. pip 命令失败
 
 **错误**: `pip install pymilvus` 失败
 
@@ -258,13 +310,13 @@ Milvus Windows 功能测试
 # 升级 pip
 python -m pip install --upgrade pip
 
-# 使用国内镜像源
-pip install pymilvus -i https://pypi.tuna.tsinghua.edu.cn/simple
+# 使用国内镜像源（如果网络慢）
+pip install "pymilvus[milvus-lite]" -i https://pypi.tuna.tsinghua.edu.cn/simple
 ```
 
-### 3. 连接失败
+### 4. 连接到服务器失败
 
-**错误**: `连接失败: ...`
+**错误**: `连接失败: ...`（当使用服务器模式时）
 
 **解决方案**:
 - 使用默认的 Milvus Lite 模式（uri = "milvus_demo.db"）

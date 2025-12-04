@@ -26,10 +26,17 @@ echo 正在检查 pymilvus 是否已安装...
 REM 检查 pymilvus 是否已安装
 pip show pymilvus >nul 2>&1
 if %errorlevel% neq 0 (
-    echo pymilvus 未安装，正在安装...
-    pip install pymilvus
+    echo pymilvus 未安装，正在安装 pymilvus 和 Milvus Lite...
+    pip install "pymilvus[milvus-lite]"
 ) else (
-    echo pymilvus 已安装
+    echo pymilvus 已安装，检查 Milvus Lite...
+    pip show milvus >nul 2>&1
+    if %errorlevel% neq 0 (
+        echo Milvus Lite 未安装，正在安装...
+        pip install milvus
+    ) else (
+        echo Milvus Lite 已安装
+    )
 )
 
 echo.
