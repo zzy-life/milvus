@@ -47,10 +47,13 @@
 - **Python**: 3.8 或更高版本
 - **依赖包**:
   - pymilvus >= 2.4.0
-  - milvus (Milvus Lite，用于本地测试)
+  - **milvus-lite** (注意：是 milvus-lite，不是 milvus！)
   - numpy
 
-**重要**: 脚本会自动安装这些依赖
+**⚠️ 重要提醒**:
+- 正确的包名是 **`milvus-lite`**（带连字符）
+- PyPI 上有个 `milvus` 包（无连字符）是错误的旧包，不要安装！
+- 脚本会自动检查并安装正确的依赖
 
 ## 🚀 快速开始
 
@@ -79,11 +82,15 @@
    ```
 3. 安装依赖（**重要：必须安装 Milvus Lite**）:
    ```bash
-   # 方式 1: 一键安装（推荐）
+   # 方式 1: 一键安装（强烈推荐）
    pip install "pymilvus[milvus-lite]"
 
-   # 方式 2: 分开安装
-   pip install pymilvus milvus numpy
+   # 方式 2: 分开安装（注意包名是 milvus-lite 带连字符）
+   pip install pymilvus milvus-lite numpy
+
+   # ⚠️ 如果之前误装了 milvus 包，请先卸载
+   pip uninstall milvus -y
+   pip install milvus-lite
    ```
 4. 运行测试:
    ```bash
@@ -273,23 +280,35 @@ Please install it with: pip install pymilvus[milvus_lite]
 
 **原因**: Milvus Lite 是一个嵌入式本地服务，需要单独安装。
 
+**⚠️ 特别注意**:
+- PyPI 上有两个容易混淆的包：
+  - ❌ **`milvus`** (2.2.16) - 这是**错误的旧包**，不要安装！
+  - ✅ **`milvus-lite`** - 这才是**正确的包**
+
 **解决方案**:
 ```bash
-# 推荐方式：完整安装
+# 方式 1: 推荐 - 一键安装（自动安装正确的包）
 pip install "pymilvus[milvus-lite]"
 
-# 或者分开安装
-pip install pymilvus milvus
+# 方式 2: 分开安装（注意包名是 milvus-lite 带连字符）
+pip install pymilvus milvus-lite
 
-# 如果上面命令失败，尝试
-pip install pymilvus
-pip install milvus
+# ⚠️ 如果之前误装了错误的 milvus 包
+pip uninstall milvus -y          # 先卸载错误的包
+pip install milvus-lite           # 再安装正确的包
 ```
 
 **验证安装**:
 ```bash
-pip show pymilvus
-pip show milvus
+pip show milvus-lite    # ✅ 应该显示版本信息
+pip show milvus         # ❌ 应该显示 "Package(s) not found"
+```
+
+**正确的安装后应该看到**:
+```
+Name: milvus-lite
+Version: 2.x.x
+Summary: ...
 ```
 
 ### 2. Python 未找到

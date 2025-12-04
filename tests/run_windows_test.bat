@@ -30,10 +30,12 @@ if %errorlevel% neq 0 (
     pip install "pymilvus[milvus-lite]"
 ) else (
     echo pymilvus 已安装，检查 Milvus Lite...
-    pip show milvus >nul 2>&1
+    pip show milvus-lite >nul 2>&1
     if %errorlevel% neq 0 (
         echo Milvus Lite 未安装，正在安装...
-        pip install milvus
+        echo 注意：先卸载错误的 milvus 包...
+        pip uninstall milvus -y >nul 2>&1
+        pip install milvus-lite
     ) else (
         echo Milvus Lite 已安装
     )

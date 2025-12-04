@@ -34,10 +34,12 @@ if ($LASTEXITCODE -ne 0) {
     }
 } else {
     Write-Host "pymilvus 已安装，检查 Milvus Lite..." -ForegroundColor Green
-    $milvusShow = pip show milvus 2>&1
+    $milvusShow = pip show milvus-lite 2>&1
     if ($LASTEXITCODE -ne 0) {
         Write-Host "Milvus Lite 未安装，正在安装..." -ForegroundColor Yellow
-        pip install milvus
+        Write-Host "注意：先卸载错误的 milvus 包..." -ForegroundColor Yellow
+        pip uninstall milvus -y 2>&1 | Out-Null
+        pip install milvus-lite
         if ($LASTEXITCODE -ne 0) {
             Write-Host "[错误] Milvus Lite 安装失败" -ForegroundColor Red
             Read-Host "按任意键退出"
